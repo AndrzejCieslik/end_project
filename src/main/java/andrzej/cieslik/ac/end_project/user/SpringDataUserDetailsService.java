@@ -11,6 +11,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SpringDataUserDetailsService implements UserDetailsService {
+
+    @Autowired
     private UserService userService;
 
     @Autowired
@@ -30,6 +32,6 @@ public class SpringDataUserDetailsService implements UserDetailsService {
                 grantedAuthorities.add(new SimpleGrantedAuthority(r.getName())));
 
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(), user.getPassword(), grantedAuthorities);
+                user.getUsername(), user.getPassword(), user.getEnabled() > 0, true, true, true, grantedAuthorities);
     }
 }

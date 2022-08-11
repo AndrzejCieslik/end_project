@@ -7,7 +7,7 @@
     <title>Title</title>
 </head>
 <body>
-<a href="<c:url value="/home-form/"/>">home</a>
+<a href="<c:url value="/product-form/list"/>">home</a>
 <a href="/cart">koszyk${itemsCount}</a>
 <table>
     <tr>
@@ -44,13 +44,6 @@
         </tr>
     </c:forEach>
 </table>
-<form action="${pageContext.request.contextPath}/save_cart" method="post">
-<input type="hidden" name="save" value="true">
-    <button type="submit">buy</button>
-</form>
+<a href="/save_cart">przejdź do zakupu</a>
 </body>
 </html>
-
-<%--
-ci -> System.out.println(ci.getProduct().getName() + " : " +
-ci.getProduct().getPrice())--%>

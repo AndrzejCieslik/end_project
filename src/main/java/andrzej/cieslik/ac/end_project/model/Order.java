@@ -1,9 +1,11 @@
 package andrzej.cieslik.ac.end_project.model;
 
+import andrzej.cieslik.ac.end_project.user.User;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.util.HashMap;
 
 @Entity
@@ -18,10 +20,21 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    private Client client;
-    @NotBlank
+    @ManyToOne(cascade = {CascadeType.ALL})
+    private User user;
+
     private OrderState orderState;
+    private LocalDate  orderDate;
+    private LocalDate paymentDate;
+    private LocalDate deliveryDate;
+    private LocalDate cancelDate;
+    private String remarks;
+
+    public Order(User user, OrderState orderState,LocalDate orderDate) {
+        this.user = user;
+        this.orderState = orderState;
+        this.orderDate = orderDate;
+    }
 
     @Override
     public int hashCode() {

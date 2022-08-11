@@ -1,3 +1,4 @@
+/*
 package andrzej.cieslik.ac.end_project.model;
 
 import lombok.*;
@@ -33,3 +34,4 @@ public class Client {
     private String deliveryAddress;
 
 }
+*/

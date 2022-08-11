@@ -14,13 +14,10 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAllByName(String name);
 
-
     List<Product> findAllById(Long id);
 
     @Query("select p from Product p where p.active = ?1")
     List<Product> findActiveProducts(Boolean active);
-
-
 
     @Transactional
     @Query("update Product p set p.active = false where p.id = ?1")

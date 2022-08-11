@@ -7,8 +7,8 @@
 </head>
 <body>
 <h4>Update client</h4>
-<%--@elvariable id="clients" type="andrzej.cieslik.ac.end_project.model.Client"--%>
-<form:form modelAttribute="clients" cssClass="some-class" action="/client-form/update">
+<%--@elvariable id="users" type="andrzej.cieslik.ac.end_project.user.User"--%>
+<form:form modelAttribute="users" cssClass="some-class" action="/user-form/update">
     <table>
     <tr>
         <th>firstName</th>

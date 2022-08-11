@@ -5,9 +5,6 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public class OrderItemController {
-    //private final OrderItem orderItem;
 
-    /*public OrderItemController(OrderItem orderItem) {
-        this.orderItem = orderItem;
-    }*/
+
 }

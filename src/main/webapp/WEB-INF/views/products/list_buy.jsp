@@ -9,6 +9,8 @@
 <body>
 <a href="<c:url value="/home-form/"/>">home</a>
 <a href="/cart">koszyk${itemsCount}</a>
+<a href="/login">zaloguj się</a>
+<a href="/create-user">zarejetruj się</a>
 <table>
     <tr>
         <th>name</th>
@@ -30,7 +32,7 @@
             <td>${product.price}</td>
             <td>
                 <form action="${pageContext.request.contextPath}/add_to_cart" method="post">
-                    <input type="hidden" name="id" value="1">
+                    <input type="hidden" name="id" value="${product.id}">
                     <label>
                         <input type="number" name="quantity" placeholder="quantity of product" value="1">
                     </label>

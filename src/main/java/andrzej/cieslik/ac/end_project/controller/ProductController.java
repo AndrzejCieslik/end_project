@@ -33,6 +33,7 @@ public class ProductController {
     }
     @GetMapping("/list_to_edit")
     public String listToEdit(Model model){
+        System.out.println("xxxx");
         model.addAttribute("products", productRepository.findAll());
         return "products/list_to_edit_for_admin";
     }

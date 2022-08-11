@@ -24,5 +24,10 @@ public class OrderItem {
     @ManyToOne
     private Order order;
 
-
+    public OrderItem(Product product, BigDecimal price, int quantity, Order order) {
+        this.product = product;
+        this.price = price;
+        this.quantity = quantity;
+        this.order = order;
+    }
 }

@@ -1,25 +1,41 @@
 package andrzej.cieslik.ac.end_project.controller;
 
+import andrzej.cieslik.ac.end_project.model.Order;
+import andrzej.cieslik.ac.end_project.model.OrderItem;
 import andrzej.cieslik.ac.end_project.model.Product;
+import andrzej.cieslik.ac.end_project.repository.OrderItemRepository;
+import andrzej.cieslik.ac.end_project.repository.OrderRepository;
 import andrzej.cieslik.ac.end_project.repository.ProductRepository;
 import andrzej.cieslik.ac.end_project.service.Cart;
 import andrzej.cieslik.ac.end_project.service.CartItem;
+import andrzej.cieslik.ac.end_project.user.User;
+import andrzej.cieslik.ac.end_project.user.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Iterator;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.Optional;
+
+import static andrzej.cieslik.ac.end_project.model.OrderState.WAITING_FOR_PAYMENT;
 
 @Controller
 
 public class CartController {
     private final Cart cart;
+    private final UserService userService;
+    private final OrderItemRepository orderItemRepository;
+    private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
 
-    public CartController(Cart cart, ProductRepository productRepository) {
+    public CartController(Cart cart, UserService userService, OrderItemRepository orderItemRepository, OrderRepository orderRepository, ProductRepository productRepository) {
         this.cart = cart;
+        this.userService = userService;
+        this.orderItemRepository = orderItemRepository;
+        this.orderRepository = orderRepository;
+
         this.productRepository = productRepository;
     }
 
@@ -75,13 +91,17 @@ public class CartController {
         cart.getCartItems().remove(temp);
         return "redirect:/cart";
     }
-    @PostMapping("/save_cart")
-    public String saveCart (@RequestParam boolean save){
-        if(save){
+    int order = 0;
+    @GetMapping("/save_cart")
+    public String saveCart (){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUserName(auth.getName());
+        LocalDate localDate = LocalDate.now();
+        Order order = new Order(user,WAITING_FOR_PAYMENT,localDate);
+        orderRepository.save(order);
             for (CartItem cartItem: cart.getCartItems()){
-
-            }
+                orderItemRepository.save(new OrderItem(cartItem.getProduct(),cartItem.getProduct().getPrice(),cartItem.getQuantity(), order));
         }
-        return null;
+        return "redirect:/product-form/list";
     }
 }
