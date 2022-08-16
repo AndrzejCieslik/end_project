@@ -38,18 +38,16 @@ public class Product {
     private Long quantity;
     @NotNull
     private boolean active;
+
+    public Product(String name, String description, String smallFotoLink, String fotosLink, Long deliveryPeriod, BigDecimal price, Long quantity, boolean active) {
+        this.name = name;
+        this.description = description;
+        this.smallFotoLink = smallFotoLink;
+        this.fotosLink = fotosLink;
+        this.deliveryPeriod = deliveryPeriod;
+        this.price = price;
+        this.quantity = quantity;
+        this.active = active;
+    }
 }
-   /* lista w ułożeniu poziomym tzn. obok siebie nr. oferty , zwyczajowa nazwa oferty , opis zawartości przedmiotu oferty  -> link ,
-        zdjecie - jeśli dostepne ->link , termin dostawy , cena , przycisk dodaj do koszyka w przycisku il.sztuk*/
-/*
-widok 3 - strona dodawania oferty
-        i nadzoru realizcji przez admininstartora - zmienia status zapłaty i dostawy ,
-        widok 4 - strona rejestracji klienta
-        widok 5 - widok zawartości koszyka - lista pozioma w postaci pozycja : nr oferty , zwyczajowa nazwa przedmiotu oferty , termin dostawy , ilość , cena łączna
-        podsumowanie pozycji z sumą
-        poniżej przyciski opcji : edycja pozycji , powrót do widoku 1 , zakup
-        widok 6 - zakup -
-        wybór : stały klient - wszedł na widoku 1 przez przycisk stałego klienta ,bez podawania danych ;
-        klient niezalogowany - podaje dane do wysyłki
-        płatność - przelew lub karta - pusty link -
-        widok 7 : status zamówienia : lista + info o statusie zapłaty + info o dacie dostawy - sesja do czasu realizacji dostawy*/
+

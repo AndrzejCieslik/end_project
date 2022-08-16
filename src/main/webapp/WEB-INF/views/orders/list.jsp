@@ -5,9 +5,18 @@
 <html>
 <head>
     <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-<a href="<c:url value="/home-form/"/>">home</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <ul class="navbar-nav container-fluid d-flex">
+        <li class="nav-item">
+            <a class="nav-link" href="/product-form/list">Home</a>
+        </li>
+    </ul>
+</nav>
+
 <form action="${pageContext.request.contextPath}/order-form/list" method="post">
     <h5>choose selecting parameter about user and orderState to get the order to update the state</h5>
 
@@ -31,7 +40,7 @@
         <option value="orderDate">orderDate</option>
         <option value="paymentDate">paymentDate</option>
         <option value="deliveryDate">deliveryDate</option>
-        <option>value="deliveryDate">deliveryDate</option>
+        <option value="cancelDate">cancelDate</option>
     </select>
     <select name="info">
         <option value="before">before</option>
@@ -52,7 +61,7 @@
     <c:forEach items="${orders}" var="order">
         <li>
             <div>
-                <h6>user first name    user last name</h6>
+                <h6>user first name user last name</h6>
                 <h6>${order.key.getFirstName()} ${order.key.getLastName()}</h6>
             </div>
 
@@ -63,34 +72,41 @@
                     <th>change state</th>
                 </tr>
                 <c:forEach items="${order.value}" var="o">
-                <tr>
-                   <td>${o.getId()}</td>
-                    <td>${o.orderState}</td>
-                    <td>
-                        <form action="${pageContext.request.contextPath}/order-form/change_order_status">
-                            <input type="hidden" name="id" value="${o.getId()}">
-                           <h6>change of order status </h6>
-                            <select name="state">
-                               <%-- <option value="WAITING_FOR_PAYMENT">WAITING_FOR_PAYMENT</option>--%>
-                                <option value="PAYED">PAYED</option>
-                                <option value="DELIVERED">DELIVERED</option>
-                                <option value="CANCELED">CANCELED</option>
-                            </select>
-                            <button type="submit">submit</button>
-                        </form>
-                        <form action="${pageContext.request.contextPath}/order-form/list-product-of orders">
-                            <input type="hidden" name="id" value="${o.getId()}">
-                            <h6>display order product list</h6>
-                            <select name="type_of_list">
-                                    <%-- <option value="WAITING_FOR_PAYMENT">WAITING_FOR_PAYMENT</option>--%>
-                                <option value="productName">only product names and sum Value</option>
-                                <option value="productNameAndQuantityAndProductId">productName productQuantity productId</option>
-                            </select>
-                            <button type="submit">submit</button>
-                        </form>
+                    <tr>
+                        <td>${o.getId()}</td>
+                        <td>${o.orderState}</td>
+                        <td>
+                            <form action="${pageContext.request.contextPath}/order-form/change_order_status">
+                                <input type="hidden" name="id" value="${o.getId()}">
+                                <h6>change of order status </h6>
+                                <select name="state">
+                                        <%-- <option value="WAITING_FOR_PAYMENT">WAITING_FOR_PAYMENT</option>--%>
+                                    <option value="PAYED">PAYED</option>
+                                    <option value="DELIVERED">DELIVERED</option>
+                                    <option value="CANCELED">CANCELED</option>
+                                </select>
+                                <button type="submit">submit</button>
+                            </form>
+                            <form action="${pageContext.request.contextPath}/order-form/list-product-of-orders" method="post">
+                                <input type="hidden" name="id" value="${o.getId()}">
+                                <h6>display order product list</h6>
+                                <select name="type_of_list">
+                                        <%-- <option value="WAITING_FOR_PAYMENT">WAITING_FOR_PAYMENT</option>--%>
+                                    <option value="productName">only product names and sum Value</option>
+                                    <option value="productNameAndQuantityAndProductId">productName productQuantity
+                                        productId
+                                    </option>
+                                </select>
+                                <button type="submit">submit</button>
+                            </form>
+                            <%--<form>
+                                <c:if test="${}">
+                                    <p class="error ms-3">Order to big. Max allowed order quantity totals "${cartitem.getProduct().getQuantity()}"</p>
+                                </c:if>
+                            </form>--%>
 
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
                 </c:forEach>
 
             </table>

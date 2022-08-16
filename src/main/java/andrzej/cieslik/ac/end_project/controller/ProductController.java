@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("product-form")
@@ -33,7 +34,6 @@ public class ProductController {
     }
     @GetMapping("/list_to_edit")
     public String listToEdit(Model model){
-        System.out.println("xxxx");
         model.addAttribute("products", productRepository.findAll());
         return "products/list_to_edit_for_admin";
     }
@@ -46,12 +46,17 @@ public class ProductController {
     @PostMapping("/add")
     public String save(Product product){
         productRepository.save(product);
-        return "redirect:/product-form/list";
+        return "redirect:/product-form/list_to_edit";
     }
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable long id) {
-        productRepository.deactivateProduct(id);
-        return "redirect:/product-form/list";
+    @GetMapping("/change-visibility/{id}")
+    public String changeVisibility(@PathVariable Long id) {
+        Optional<Product> opt = productRepository.getById(id);
+        if (opt.isPresent()) {
+            Product product = opt.get();
+            product.setActive(!product.isActive());
+            productRepository.save(product);
+        }
+        return "redirect:/product-form/list_to_edit";
 
     }
     @GetMapping("/edit/{id}")
@@ -66,6 +71,6 @@ public class ProductController {
             return "products/edit";
         }
         productRepository.save(product);
-        return "redirect:/product-form/list";
+        return "redirect:/product-form/list_to_edit";
     }
 }

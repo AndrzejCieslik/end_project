@@ -7,7 +7,7 @@
     <title>Title</title>
 </head>
 <body>
-<a href="<c:url value="/user-form/list"/>">home</a>
+<a href="/product-form/list">home</a>
 <table>
     <tr>
         <th>id</th>

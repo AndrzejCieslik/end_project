@@ -18,12 +18,12 @@ public class LoginController {
 
     private final UserService userService;
     private final UserRepository userRepository;
-    private final List<User> list;
 
-    public LoginController(UserService userService, UserRepository userRepository, List<User> list) {
+
+    public LoginController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
-        this.list = list;
+
     }
 
     @GetMapping("/admin/test")
@@ -50,10 +50,9 @@ public class LoginController {
     @PostMapping("/create-user")
 
     public String saveUser(@Valid @ModelAttribute("user") User user, BindingResult result) {
-        for (User listElement: list){
-            if(listElement.getPassword().equals(user.getPassword())) {
+            if(userRepository.findByUsername(user.getUsername()) != null) {
+                result.rejectValue("username","error.username","username already in use");
                 return "users/add";
-            }
         }
         if (result.hasErrors()) {
             return "users/add";

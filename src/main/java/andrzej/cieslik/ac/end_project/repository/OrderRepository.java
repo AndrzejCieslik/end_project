@@ -21,7 +21,11 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     Optional<Order> getById(Long id);
     List<Order> findAllByOrderState(OrderState orderState);
 
+    List<Order> findAllByUserFirstNameAndUserLastName(String firstName, String lastName);
 
+    List<Order> findAllByUserFirstName(String firstName);
+
+    List<Order> findAllByUserLastName(String lastName);
 
 
 

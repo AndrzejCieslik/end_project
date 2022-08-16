@@ -13,10 +13,14 @@ import andrzej.cieslik.ac.end_project.user.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static andrzej.cieslik.ac.end_project.model.OrderState.WAITING_FOR_PAYMENT;
@@ -40,30 +44,30 @@ public class CartController {
     }
 
     @PostMapping("/add_to_cart")
-    public String addToCart(Model model, @RequestParam Long id, @RequestParam int quantity ) {
+    public String addToCart(@RequestParam Long id, @RequestParam int quantity) {
         Optional<Product> productOptional = productRepository.findById(id);
         boolean flag = true;
-        if(productOptional.isPresent()){
-            for(CartItem cartItem: cart.getCartItems()){
-              if(productOptional.get().getName().equals(cartItem.getProduct().getName())){
-                  cartItem.setQuantity(cartItem.getQuantity() + quantity);
-                  flag = false;
-              }
+        if (productOptional.isPresent()) {
+            for (CartItem cartItem : cart.getCartItems()) {
+                if (productOptional.get().getName().equals(cartItem.getProduct().getName())) {
+                    cartItem.setQuantity(cartItem.getQuantity() + quantity);
+                    flag = false;
+                }
             }
-           if(flag){
-               cart.addToCart(new CartItem(quantity, productOptional.get()));
-           }
-        }else{}
+            if (flag) {
+                cart.addToCart(new CartItem(quantity, productOptional.get()));
+            }
+        }
         return "redirect:/product-form/list";
     }
 
     @PostMapping("/edit_cart")
-    public String editCart(@RequestParam Long id, @RequestParam int quantity){
+    public String editCart(@RequestParam Long id, @RequestParam int quantity) {
         Optional<Product> productOptional = productRepository.findById(id);
-        if(productOptional.isPresent()){
-            for(CartItem cartItem: cart.getCartItems()){
-                if(productOptional.get().getName().equals(cartItem.getProduct().getName())){
-                    cartItem.setQuantity(cartItem.getQuantity() - cartItem.getQuantity() +quantity);
+        if (productOptional.isPresent()) {
+            for (CartItem cartItem : cart.getCartItems()) {
+                if (productOptional.get().getName().equals(cartItem.getProduct().getName())) {
+                    cartItem.setQuantity(quantity);
                 }
             }
         }
@@ -72,17 +76,18 @@ public class CartController {
 
     @GetMapping("/cart")
     public String cart(Model model) {
-        model.addAttribute("cart",cart.getCartItems());
+        cart.updateProducts();
+        model.addAttribute("cart", cart.getCartItems());
         return "cart/pay_list";
     }
 
     @PostMapping("/delete_position_in_cart")
-    public String deletePositionFromCart(@RequestParam Long id){
+    public String deletePositionFromCart(@RequestParam Long id) {
         Optional<Product> productOptional = productRepository.findById(id);
         CartItem temp = null;
-        if(productOptional.isPresent()){
-            for(CartItem cartItem: cart.getCartItems()){
-                if(productOptional.get().getName().equals(cartItem.getProduct().getName())){
+        if (productOptional.isPresent()) {
+            for (CartItem cartItem : cart.getCartItems()) {
+                if (productOptional.get().getName().equals(cartItem.getProduct().getName())) {
                     temp = cartItem;
                     //cart.getCartItems().remove(cartItem);
                 }
@@ -91,17 +96,37 @@ public class CartController {
         cart.getCartItems().remove(temp);
         return "redirect:/cart";
     }
+
     int order = 0;
+
+    @Transactional
     @GetMapping("/save_cart")
-    public String saveCart (){
+    public String saveCart() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByUserName(auth.getName());
         LocalDate localDate = LocalDate.now();
-        Order order = new Order(user,WAITING_FOR_PAYMENT,localDate);
-        orderRepository.save(order);
-            for (CartItem cartItem: cart.getCartItems()){
-                orderItemRepository.save(new OrderItem(cartItem.getProduct(),cartItem.getProduct().getPrice(),cartItem.getQuantity(), order));
+        for (CartItem cartItem : cart.getCartItems()) {
+            if (cartItem.getQuantity() > cartItem.getProduct().getQuantity()) {
+                return "redirect:/cart";
+            }
         }
-        return "redirect:/product-form/list";
+        Order order = new Order(user, WAITING_FOR_PAYMENT, localDate);
+        orderRepository.save(order);
+        List<CartItem> temp = new ArrayList<>();
+        for (CartItem cartItem : cart.getCartItems()) {
+            orderItemRepository.save(new OrderItem(cartItem.getProduct(), cartItem.getProduct().getPrice(), cartItem.getQuantity(), order));
+            Product product = cartItem.getProduct();
+            long leftInStock = product.getQuantity() - cartItem.getQuantity();
+            product.setQuantity(leftInStock);
+            if (leftInStock == 0) {
+                product.setActive(false);
+            }
+            productRepository.save(product);
+            temp.add(cartItem);
+        }
+        for (CartItem tempItem : temp) {
+            cart.getCartItems().remove(tempItem);
+        }
+        return "redirect:/order-form/order/" + order.getId();
     }
 }
