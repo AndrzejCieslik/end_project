@@ -13,6 +13,7 @@
     </style>
 </head>
 <body>
+<%@include file="../common/header.jsp"%>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -23,6 +24,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/product-form/add">Admin - product add</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user-form/list">Admin - users list</a>
             </li>
         </ul>
     </nav>

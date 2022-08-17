@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<%--@elvariable id="authors" type="pl.coderslab.author.Author"--%>
+<%--@elvariable id="orders" type="pl.coderslab.author.Author"--%>
 <form:form modelAttribute="orders" cssClass="some-class">
     <form:input path="name"/> <%--// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! nem jest z Clienta--%>
     <form:input path="orderstate"/>

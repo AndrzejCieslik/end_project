@@ -12,6 +12,7 @@
     <title>Order search</title>
 </head>
 <body>
+<%@include file="../common/header.jsp"%>
 <form method="post" action="/order-form/search">
     <label>
         Order No.

@@ -20,11 +20,11 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <ul class="navbar-nav container-fluid d-flex justify-content-start">
             <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/product-form/list"/>">Home</a>
+                <a class="nav-link" href="<c:url value="/product-form/list"/>">Back Home to search another products</a>
             </li>
-            <li class="nav-item">
+            <%--<li class="nav-item">
                 <a class="nav-link" href="/cart">Koszyk${itemsCount}</a>
-            </li>
+            </li>--%>
         </ul>
     </nav>
 
@@ -42,6 +42,7 @@
             </thead>
 
             <tbody>
+            <c:set var="flag" value="true"/>
             <c:forEach items="${cart}" var="cartitem">
                 <tr>
                         <%-- <td hidden>${.id}</td>--%>
@@ -58,8 +59,10 @@
                                 <button class="btn btn-primary" type="submit">submit</button>
                             </div>
 
+
                             <c:if test="${cartitem.getQuantity() > cartitem.getProduct().getQuantity()}">
                                 <p class="error ms-3">Order to big. Max allowed order quantity totals "${cartitem.getProduct().getQuantity()}"</p>
+                                <c:set var="flag" value="false"/>
                             </c:if>
 
                         </form>
@@ -74,8 +77,10 @@
             </c:forEach>
             </tbody>
         </table>
+        <c:if test="${flag}">
+            <a class="btn btn-success" href="/save_cart">Buy</a>
+        </c:if>
 
-        <a class="btn btn-success" href="/save_cart">Przejdź do zakupu</a>
     </div>
 </body>
 </html>

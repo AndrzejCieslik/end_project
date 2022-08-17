@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("user-form")
@@ -47,12 +48,16 @@ public class UserController {
         return "users/edit";
     }
     @PostMapping("/update")
-    public String update(@Valid User user, BindingResult result,Model model) {
-        if(result.hasErrors()){
-            model.addAttribute("users",userRepository.findById(user.getId()));
+    public String update(@Valid @ModelAttribute("users") User user, BindingResult result) {
+        if(result.getAllErrors().size()>1){
+
             return "users/edit";
         }
-        userRepository.save(user);
+        Optional<User> currentUser = userRepository.findById(user.getId());
+        if(currentUser.isPresent()){
+            user.setPassword(currentUser.get().getPassword());
+            userRepository.save(user);
+        }
         return "redirect:/user-form/list";
     }
     @PostMapping("/find-user")

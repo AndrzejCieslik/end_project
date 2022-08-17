@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+<%@include file="../common/header.jsp"%>
 <%--@elvariable id="products" type="andrzej.cieslik.ac.end_project.model.Product"--%>
 <form:form modelAttribute="products" cssClass="some-class">
     <form:input path="name" placeholder="name"/>

@@ -12,6 +12,10 @@
     <title>Order</title>
 </head>
 <body>
+<%@include file="../common/header.jsp"%>
+<li class="nav-item">
+    <a class="btn btn-success me-2" href="/logout">Wyloguj się</a>
+</li>
 <div>
     <span>Order No. ${order.id}</span>
     <span>${order.user.firstName} ${order.user.lastName}</span>
@@ -45,6 +49,7 @@
         <button type="submit">submit</button>
     </form>
     <a href="/order-form/search">Back to search</a>
+
 </c:if>
 </body>
 </html>

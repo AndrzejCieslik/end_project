@@ -35,8 +35,8 @@
             <td>${user.email}</td>
             <td>${user.deliveryAddress}</td>
             <td>
-                <a href="<c:url value="/client-form/delete/${user.id}"/>">delete</a></br>
-                <a href="<c:url value="/client-form/edit/${user.id}"/>">update</a>
+                <a href="<c:url value="/user-form/delete/${user.id}"/>">delete</a></br>
+                <a href="<c:url value="/user-form/edit/${user.id}"/>">update</a>
             </td>
         </tr>
     </c:forEach>

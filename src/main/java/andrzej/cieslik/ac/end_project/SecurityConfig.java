@@ -36,14 +36,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 /*.antMatchers("/unauthenticated/**").permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()*/
 
-                .antMatchers("/create-user","/login", "/register", "/product-form/list", "/cart", "/add_to_cart", "/edit_cart").permitAll()    // urls with unauthenticated access
+                .antMatchers("/create-user","/login", "/register", "/product-form/list", "/cart", "/add_to_cart", "/edit_cart", "/images/**").permitAll()    // urls with unauthenticated access
                 .antMatchers("/product-form/list_to_edit", "/product-form/add", "/product-form/delete/**").hasAuthority("ADMIN").anyRequest() // urls that requires "ADMIN" role
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
                 .defaultSuccessUrl("/product-form/list")
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login");
+                .logoutSuccessUrl("/product-form/list");
     }
 
 }
