@@ -50,7 +50,7 @@
                 <div class="card-body">
                     <h5 class="card-title">${product.name}</h5>
                     <p class="card-text">${product.description}</p>
-                    <p class="card-text">Small foto link: ${product.smallFotoLink}</p>
+                   <%-- <p class="card-text">Small foto link: ${product.smallFotoLink}</p>--%>
                     <p class="card-text">Fotos link: ${product.fotosLink}</p>
                     <p class="card-text">Delivery period: ${product.deliveryPeriod}</p>
                     <p class="card-text">Price: ${product.price}</p>

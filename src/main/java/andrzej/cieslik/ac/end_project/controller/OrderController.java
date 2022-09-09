@@ -67,22 +67,6 @@ public class OrderController {
         return "redirect:/order-form/search?" + (orderId != null ? "orderId=" + orderId + "&": "") + (firstName != null ? "firstName=" + firstName + "&": "") + (lastName != null ? "lastName=" + lastName : "");
     }
 
-    /*@GetMapping("/list")
-    public String list(Model model) {
-        model.addAttribute("orders", orderService.getOrdersByUsers());
-        return "orders/list";
-    }*/
-
-    /*@GetMapping("/list")
-    public String list(Model model) {
-        model.addAttribute("orders", orderService.getOrderByUserId(1L));
-        return "orders/list";
-    }*/
-    /*@GetMapping("/list")
-    public String list(Model model) {
-        model.addAttribute("orders", orderService.getOrderByStateAndUserId(OrderState.WAITING_FOR_PAYMENT,1L));
-        return "orders/list";
-    }*/
     @GetMapping("/order/{id}")
     public String showOrder(Model model, @PathVariable Long id){
         Optional<Order> orderOpt = orderRepository.getById(id);
@@ -150,7 +134,6 @@ public class OrderController {
             }
             orderRepository.save(order);
         }
-
         return "redirect:search";
     }
 
