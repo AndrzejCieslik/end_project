@@ -35,15 +35,15 @@ public class OrderService {
         HashMap<User, List<Order>> ordersByDates = new HashMap<>();
         for (Order order : orderList) {
             //if (order.getOrderState().equals(orderState)) {
-                int difference = order.getOrderDate().compareTo(orderDate);
-                if (sign == 0 && difference == 0) {
-                    getOrCreate(ordersByDates, order.getUser()).add(order);
-                } else if (sign > 0 && difference > 0) {
-                    getOrCreate(ordersByDates, order.getUser()).add(order);
-                } else if (sign < 0 && difference < 0) {
-                    getOrCreate(ordersByDates, order.getUser()).add(order);
-                }
-           // }
+            int difference = order.getOrderDate().compareTo(orderDate);
+            if (sign == 0 && difference == 0) {
+                getOrCreate(ordersByDates, order.getUser()).add(order);
+            } else if (sign > 0 && difference > 0) {
+                getOrCreate(ordersByDates, order.getUser()).add(order);
+            } else if (sign < 0 && difference < 0) {
+                getOrCreate(ordersByDates, order.getUser()).add(order);
+            }
+            // }
         }
         return ordersByDates;
     }
@@ -54,9 +54,7 @@ public class OrderService {
         HashMap<User, List<Order>> ordersByOrderState = new HashMap<>();
         for (Order order : orderList) {
             for (User tempListItem : tempList)
-                if (tempListItem.equals(order.getUser()))
-
-                    /*if(Objects.equals(order.getOrderState(), orderState) && Objects.equals(order.getUser().getId(), id))*/ {
+                if (tempListItem.equals(order.getUser())) {
                     getOrCreate(ordersByOrderState, order.getUser()).add(order);
                 }
         }
