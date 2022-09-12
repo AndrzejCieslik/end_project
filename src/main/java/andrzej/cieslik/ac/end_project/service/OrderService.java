@@ -34,7 +34,6 @@ public class OrderService {
         List<Order> orderList = orderRepository.findAllByOrderState(orderState);
         HashMap<User, List<Order>> ordersByDates = new HashMap<>();
         for (Order order : orderList) {
-            //if (order.getOrderState().equals(orderState)) {
             int difference = order.getOrderDate().compareTo(orderDate);
             if (sign == 0 && difference == 0) {
                 getOrCreate(ordersByDates, order.getUser()).add(order);
@@ -43,7 +42,6 @@ public class OrderService {
             } else if (sign < 0 && difference < 0) {
                 getOrCreate(ordersByDates, order.getUser()).add(order);
             }
-            // }
         }
         return ordersByDates;
     }
